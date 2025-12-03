@@ -1,6 +1,6 @@
-/* Thiết lập chung */
+/* Thiết lập chung và font */
 body {
-    background-color: #1a1a2e; /* Nền chính tối */
+    background-color: #1a1a2e; /* Nền tối */
     color: #f0f0f0; /* Chữ trắng */
     font-family: Arial, sans-serif;
     margin: 0;
@@ -18,15 +18,12 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    /* DÒNG CHỮ TRẮNG VẠCH ĐỎ: Vạch trắng được tạo ở đây */
+    /* TẠO VẠCH TRẮNG CHẠY TRÊN */
     border-top: 2px solid white; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.alert-bar p {
-    margin: 0;
     font-size: 0.9em;
 }
+
+.alert-bar p { margin: 0; }
 
 .alert-bar .close-btn {
     position: absolute;
@@ -42,36 +39,19 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #0d0d1a; /* Header tối hơn */
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-}
-
-.logo-img {
-    border-radius: 50%;
-    margin-right: 10px;
+    background-color: #0d0d1a; 
 }
 
 .logo-text {
     font-weight: bold;
     font-size: 1.2em;
-}
-
-.logo-text span {
-    font-size: 0.7em;
-    color: #aaa;
-    display: block;
-    line-height: 1;
+    color: #f0f0f0;
 }
 
 .search-bar {
     display: flex;
     background-color: #2c2c44;
     border-radius: 5px;
-    padding: 0;
     width: 40%;
 }
 
@@ -81,11 +61,6 @@ body {
     border: none;
     color: white;
     padding: 8px 15px;
-    font-size: 1em;
-}
-
-.search-bar input::placeholder {
-    color: #999;
 }
 
 .search-btn {
@@ -105,6 +80,7 @@ body {
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 1em;
 }
 
 .user-nav .login-btn {
@@ -114,31 +90,30 @@ body {
 }
 
 /* --- 3. MENU VÀ LỌC --- */
+.main-menu-nav { padding: 10px 20px; }
+.filter-bar { padding: 10px 20px; background-color: #1a1a2e; }
+
 .main-menu-nav button, .filter-bar button {
     background-color: #2c2c44;
     color: white;
-    border: none;
+    border: 1px solid #444;
     padding: 8px 15px;
     margin-right: 5px;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-}
-
-.filter-bar {
-    padding: 10px 20px;
-    background-color: #1a1a2e;
+    font-weight: normal;
 }
 
 .filter-bar .active {
     background-color: #f44336; /* Màu đỏ cho nút đang chọn */
+    border-color: #f44336;
 }
 
-/* --- 4. LƯỚI SẢN PHẨM --- */
+/* --- 4. LƯỚI SẢN PHẨM (GRID) --- */
 .product-grid {
     display: grid;
-    /* Chia cột linh hoạt, tối thiểu 200px mỗi cột */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    /* 8 cột trên màn hình lớn */
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
     gap: 15px;
     padding: 20px;
 }
@@ -150,12 +125,6 @@ body {
     cursor: pointer; 
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    transition: transform 0.2s;
-}
-
-.product-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
 .copyright-tag {
@@ -166,20 +135,18 @@ body {
     color: black;
     padding: 2px 5px;
     border-radius: 3px;
-    font-size: 0.8em;
+    font-size: 0.7em;
     font-weight: bold;
     z-index: 10;
 }
 
 .product-image-area {
     position: relative;
-    text-align: center;
-}
-
-.product-image-area img {
-    width: 100%;
-    height: auto;
-    display: block;
+    height: 150px; /* Chiều cao cố định cho ảnh */
+    background-color: #3f3f5a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cart-icon {
@@ -188,8 +155,9 @@ body {
     right: 5px;
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
-    padding: 5px;
+    padding: 5px 8px;
     border-radius: 50%;
+    font-size: 0.9em;
 }
 
 .product-title {
@@ -197,28 +165,30 @@ body {
     margin: 0;
     font-size: 0.9em;
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* --- 5. POP-UP MODAL (Bảng Hiện) --- */
+/* --- 5. POP-UP MODAL (Bảng Hiện Chi Tiết) --- */
 .modal {
-    display: none; /* Mặc định ẩn */
+    display: none; /* Mặc định ẩn, được JS điều khiển */
     position: fixed;
-    z-index: 100; /* Đảm bảo nổi lên trên tất cả */
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8); /* Nền mờ tối */
-    overflow: auto; /* Cho phép cuộn nếu nội dung dài */
+    background-color: rgba(0,0,0,0.85); /* Nền mờ tối */
 }
 
 .modal-content {
     background-color: #2c2c44; 
-    margin: 5% auto; 
+    margin: 5% auto; /* Canh giữa dọc */
     border-radius: 10px;
-    width: 70%; /* Chiều rộng */
+    width: 60%; /* Chiều rộng */
+    min-width: 400px;
     position: relative;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     padding: 0;
 }
 
@@ -230,6 +200,7 @@ body {
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
+    z-index: 10;
 }
 
 .modal-title {
@@ -255,16 +226,18 @@ body {
 .detail-image-area {
     display: flex;
     align-items: center;
+    position: relative;
+    width: 100%;
 }
 
-.detail-image {
+.detail-image-area img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
 }
 
 .nav-arrow {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     border: none;
     font-size: 2em;
@@ -273,7 +246,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
+    border-radius: 50%;
 }
 
 .left-arrow { left: 10px; }
@@ -293,14 +266,9 @@ body {
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
-    transition: opacity 0.2s;
 }
 
-.modal-actions button i {
-    margin-right: 5px;
-}
-
-/* Kiểu cho từng nút */
+/* Màu nút theo ảnh mẫu */
 .buy-button { background-color: #008000; color: white; } /* Xanh lá */
 .copy-button { background-color: #8a2be2; color: white; } /* Tím */
 .buy-content-button { background-color: #0000ff; color: white; } /* Xanh dương */
