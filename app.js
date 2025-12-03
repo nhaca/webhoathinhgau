@@ -38,7 +38,7 @@ window.onclick = function(event) {
 }
 
 /* ========================================================================= */
-/* --- 3. LOGIC TƯƠNG TÁC SẢN PHẨM & THANH TOÁN (FIX LỖI 2, 3) --- */
+/* --- 3. LOGIC TƯƠNG TÁC SẢN PHẨM & THANH TOÁN (FIX LỖI CŨ) --- */
 /* ========================================================================= */
 
 // Biến toàn cục để lưu thông tin sản phẩm đang được chọn
@@ -49,7 +49,6 @@ let currentProduct = null;
  * @param {string} productId - ID của sản phẩm.
  */
 function showProductDetail(productId) {
-    // Tìm sản phẩm trong mock data (được định nghĩa trong data.js)
     currentProduct = productData.find(p => p.id === productId);
 
     if (!currentProduct) {
@@ -63,7 +62,6 @@ function showProductDetail(productId) {
     document.querySelector('.detail-res').textContent = currentProduct.res;
     document.querySelector('.detail-format').textContent = currentProduct.format;
 
-    // Cập nhật nút THANH TOÁN để gọi hàm showPaymentModal
     const checkoutBtn = document.getElementById('checkout-btn');
     checkoutBtn.onclick = () => {
         showPaymentModal(currentProduct);
@@ -74,11 +72,10 @@ function showProductDetail(productId) {
 
 /**
  * Chuyển từ Modal Chi tiết Sản phẩm sang Modal Thanh toán/Đăng nhập.
- * (FIX LỖI THANH TOÁN - Đảm bảo dữ liệu được truyền)
  * @param {object} product - Đối tượng sản phẩm đang được chọn.
  */
 function showPaymentModal(product) {
-    closeModal('product_detail'); // Đóng Modal chi tiết
+    closeModal('product_detail'); 
 
     const paymentModal = document.getElementById('payment_modal');
     
@@ -101,14 +98,56 @@ function showLoginModal(event) {
     event.preventDefault(); 
     showModal('payment'); 
     
-    // Điều chỉnh Modal để chỉ hiển thị form đăng nhập
+    // Điều chỉnh Modal để chỉ hiển thị form đăng nhập (ẩn phần thông tin thanh toán)
     document.querySelector('.info-section').style.display = 'none'; 
     document.querySelector('.auth-section').style.flex = '100%'; 
     document.getElementById('payment-modal-title').textContent = 'VUI LÒNG ĐĂNG NHẬP TÀI KHOẢN CỦA BẠN';
 }
 
+/* ========================================================================= */
+/* --- 4. LOGIC ĐĂNG NHẬP, PHÂN QUYỀN VÀ TẠO TÀI KHOẢN (YÊU CẦU 1, 3) --- */
+/* ========================================================================= */
+
+// Danh sách tài khoản (Mô phỏng - Hardcoded)
+let userAccounts = [
+    { tk: 'adminwebmachacminh', mk: 'phucdepzai@', role: 'Admin' }, // Yêu cầu 1
+    { tk: 'thanhvien1', mk: '123456', role: 'Member' },
+    { tk: 'vipuser', mk: 'vip999', role: 'VIP' }
+];
+
+let currentUser = null; // Lưu trữ thông tin người dùng đang đăng nhập
+
 /**
- * Hàm mô phỏng hành động Đăng nhập (FIX LỖI ĐĂNG NHẬP)
+ * Cập nhật giao diện sau khi đăng nhập/đăng xuất (Thanh Nav)
+ */
+function updateUI() {
+    const loginBtn = document.getElementById('login-nav-btn');
+    const memberBtn = document.getElementById('member-btn');
+    const adminLink = document.getElementById('admin-link');
+    const upgradeLink = document.getElementById('upgrade-link');
+
+    if (currentUser) {
+        // Đã đăng nhập
+        loginBtn.style.display = 'none';
+        memberBtn.textContent = `Xin chào, ${currentUser.tk} (${currentUser.role})`;
+        
+        // Hiện/Ẩn link Admin
+        adminLink.style.display = currentUser.role === 'Admin' ? 'block' : 'none';
+        
+        // Ẩn link nâng cấp nếu là Admin hoặc đã là VIP (mô phỏng)
+        upgradeLink.style.display = currentUser.role === 'VIP' || currentUser.role === 'Admin' ? 'none' : 'block';
+
+    } else {
+        // Chưa đăng nhập
+        loginBtn.style.display = 'block';
+        memberBtn.textContent = 'Thành Viên';
+        adminLink.style.display = 'none';
+        upgradeLink.style.display = 'block';
+    }
+}
+
+/**
+ * Hàm mô phỏng hành động Đăng nhập.
  * @param {Event} event - Sự kiện submit form.
  */
 function handleAuthSubmit(event) {
@@ -118,33 +157,82 @@ function handleAuthSubmit(event) {
     const username = form.elements['username'].value;
     const password = form.elements['password'].value;
 
-    console.log(`Đang cố gắng đăng nhập: User=${username}, Pass=${password}`);
+    const account = userAccounts.find(u => u.tk === username && u.mk === password);
 
-    // Logic kiểm tra cơ bản
-    if (username.length > 3 && password.length > 5) {
-        alert(`Đăng nhập thành công cho tài khoản: ${username}!\n(Mô phỏng: Sau này sẽ gọi API .NET Identity)`);
+    if (account) {
+        currentUser = account;
+        alert(`Đăng nhập thành công! Vai trò: ${currentUser.role}`);
         closeModal('payment');
-        // Reset form sau khi đăng nhập thành công
+        updateUI(); // Cập nhật giao diện
         form.reset(); 
     } else {
-        alert("Lỗi Đăng nhập: Tên tài khoản phải trên 3 ký tự và Mật khẩu trên 5 ký tự.");
+        alert("Lỗi Đăng nhập: Tên tài khoản hoặc Mật khẩu không đúng.");
     }
 }
 
 /**
- * Hàm mô phỏng hành động Nâng cấp (FIX LỖI NÂNG CẤP)
- * @param {HTMLButtonElement} button - Nút được bấm.
+ * Xử lý Đăng xuất
  */
-function handleUpgrade(button) {
-    const packageName = button.getAttribute('data-package');
-    const price = button.getAttribute('data-price');
+function handleLogout() {
+    currentUser = null;
+    alert("Bạn đã đăng xuất.");
+    updateUI(); // Cập nhật giao diện
+    closeOtherDropdowns(null);
+}
 
-    closeModal('upgrade');
-    alert(`Mô phỏng: Chuyển đến trang thanh toán cho ${packageName} với giá ${price}.\n(Bạn sẽ thay thế bằng logic thanh toán)`);
+
+/* --- CHỨC NĂNG ADMIN (YÊU CẦU 3) --- */
+
+/**
+ * Hiển thị Modal Admin và kiểm tra quyền
+ * @param {Event} event - Sự kiện click.
+ */
+function showAdminModal(event) {
+    event.preventDefault();
+    if (currentUser && currentUser.role === 'Admin') {
+        closeOtherDropdowns(null);
+        showModal('admin');
+    } else {
+        alert("Lỗi: Bạn không có quyền truy cập khu vực Quản trị.");
+    }
+}
+
+/**
+ * Xử lý tạo tài khoản thành viên mới (Chỉ Admin)
+ * @param {Event} event - Sự kiện submit form.
+ */
+function handleCreateMember(event) {
+    event.preventDefault();
+    
+    if (currentUser.role !== 'Admin') {
+        alert("Lỗi: Chỉ Admin mới có thể tạo tài khoản.");
+        return;
+    }
+
+    const newUsername = document.getElementById('new_username').value;
+    const newPassword = document.getElementById('new_password').value;
+    const newRole = document.getElementById('new_role').value;
+
+    // Kiểm tra trùng lặp
+    if (userAccounts.some(u => u.tk === newUsername)) {
+        alert(`Lỗi: Tài khoản '${newUsername}' đã tồn tại.`);
+        return;
+    }
+
+    // Thêm tài khoản mới vào danh sách mô phỏng
+    userAccounts.push({
+        tk: newUsername,
+        mk: newPassword,
+        role: newRole
+    });
+
+    alert(`Tạo tài khoản thành công!\nTK: ${newUsername}\nMK: ${newPassword}\nVai trò: ${newRole}`);
+    document.getElementById('createMemberForm').reset();
+    console.log("Danh sách tài khoản cập nhật:", userAccounts);
 }
 
 /* ========================================================================= */
-/* --- 4. HÀM TIỆN ÍCH VÀ SỰ KIỆN GIAO DIỆN (UI/UX) --- */
+/* --- 5. HÀM TIỆN ÍCH VÀ SỰ KIỆN GIAO DIỆN (UI/UX) --- */
 /* ========================================================================= */
 
 /**
@@ -201,14 +289,11 @@ function toggleTheme() {
     body.classList.toggle('light-theme');
     body.classList.toggle('dark-theme');
 
-    // Cập nhật icon
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (body.classList.contains('light-theme')) {
-        themeBtn.textContent = '🌙'; // Icon mặt trăng cho theme sáng
-        alert("Mô phỏng: Chuyển sang Giao diện Sáng (Chức năng này cần thêm CSS cho light-theme)");
+        themeBtn.textContent = '🌙'; 
     } else {
-        themeBtn.textContent = '☀️'; // Icon mặt trời cho theme tối
-        alert("Mô phỏng: Chuyển sang Giao diện Tối");
+        themeBtn.textContent = '☀️'; 
     }
 }
 
@@ -239,7 +324,7 @@ function renderProductList() {
 
 
 /* ========================================================================= */
-/* --- 5. INITIALIZATION VÀ SỰ KIỆN TRANG TẢI XONG --- */
+/* --- 6. INITIALIZATION VÀ SỰ KIỆN TRANG TẢI XONG --- */
 /* ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -263,5 +348,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`Mô phỏng: Đang tìm kiếm từ khóa "${searchInput.value}"`);
     };
 
-    console.log("WebApp đã được khởi tạo thành công với các chức năng đã sửa lỗi.");
+    // 4. Cập nhật UI lần đầu (chắc chắn chưa đăng nhập)
+    updateUI(); 
+
+    console.log("WebApp đã được khởi tạo thành công. Vui lòng đăng nhập với TK Admin đã cung cấp.");
 });
