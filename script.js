@@ -1,42 +1,134 @@
-// HÀM HIỆN POP-UP (MODAL)
+// --- 1. HÀM QUẢN LÝ MODAL (POP-UP) ---
+
+// Hiện modal
 function showModal(itemId) {
-    // Tìm modal dựa trên ID (ví dụ: 'item_a' -> 'item_a_modal')
     var modal = document.getElementById(itemId + '_modal');
     if (modal) {
-        // Hiển thị modal
         modal.style.display = "block";
     }
 }
 
-// HÀM ẨN POP-UP (MODAL)
+// Ẩn modal
 function closeModal(itemId) {
     var modal = document.getElementById(itemId + '_modal');
     if (modal) {
-        // Ẩn modal
         modal.style.display = "none";
     }
 }
 
-// XỬ LÝ SỰ KIỆN: Ẩn modal khi người dùng click vào vùng nền tối bên ngoài
+// Ẩn modal khi click ra ngoài nền đen
 window.onclick = function(event) {
-    // Lấy tất cả các modal trên trang
     var modals = document.querySelectorAll('.modal');
     modals.forEach(function(modal) {
-        // Nếu khu vực click là chính modal (nền đen mờ), thì ẩn modal đó đi
         if (event.target == modal) {
             modal.style.display = "none";
         }
     });
 }
 
-// XỬ LÝ SỰ KIỆN: Đóng thanh thông báo đỏ khi click vào nút X
+// --- 2. HÀM XỬ LÝ THANH TOÁN & ĐĂNG NHẬP ---
+
+// Xử lý khi bấm nút "Đăng nhập"
+function showLoginMessage(event) {
+    event.preventDefault(); 
+    alert("Chức năng Đăng nhập đang được xây dựng. (Trong .NET, bạn sẽ chuyển hướng đến trang /Identity/Account/Login ở đây)");
+}
+
+// Xử lý khi bấm nút "THANH TOÁN" (Modal 1 -> Modal 2)
+function showPaymentModal(event, productName, price) {
+    event.preventDefault();
+
+    // Đóng Modal chi tiết sản phẩm hiện tại
+    var currentModal = event.target.closest('.modal');
+    if (currentModal) {
+        currentModal.style.display = 'none';
+    }
+
+    // Cập nhật thông tin trong Modal Thanh toán
+    const paymentModal = document.getElementById('payment_modal');
+    
+    // Cập nhật tên sản phẩm và giá tiền
+    if (paymentModal) {
+        paymentModal.querySelector('.product-name-display').textContent = productName;
+        paymentModal.querySelector('.price-display').textContent = price;
+
+        // Hiển thị Modal Thanh toán
+        showModal('payment');
+    }
+}
+
+// --- 3. HÀM QUẢN LÝ DROPDOWN THÀNH VIÊN ---
+
+// Hiện/Ẩn menu thả xuống
+function toggleDropdown(event) {
+    event.preventDefault(); 
+    event.stopPropagation(); 
+
+    const dropdown = document.getElementById("member-dropdown");
+    const arrow = document.querySelector("#member-btn .dropdown-arrow");
+    
+    // Đóng các dropdown khác trước khi mở cái này
+    closeOtherDropdowns(dropdown);
+    
+    dropdown.classList.toggle('show');
+    arrow.classList.toggle('rotated');
+}
+
+// Đóng các dropdown khác
+function closeOtherDropdowns(currentDropdown) {
+    const dropdowns = document.querySelectorAll('.dropdown-content.show');
+    dropdowns.forEach(function(d) {
+        if (d !== currentDropdown) {
+            d.classList.remove('show');
+            const relatedArrow = d.previousElementSibling.querySelector('.dropdown-arrow');
+            if (relatedArrow) {
+                relatedArrow.classList.remove('rotated');
+            }
+        }
+    });
+}
+
+// Đóng dropdown khi click ra ngoài
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.dropdown-member')) {
+        const dropdowns = document.querySelectorAll('.dropdown-content.show');
+        dropdowns.forEach(function(dropdown) {
+            dropdown.classList.remove('show');
+            
+            const arrow = dropdown.previousElementSibling.querySelector('.dropdown-arrow');
+            if (arrow) {
+                arrow.classList.remove('rotated');
+            }
+        });
+    }
+});
+
+// --- 4. HÀM NÂNG CẤP VIP ---
+
+// Xử lý khi bấm "Nâng cấp tài khoản" (Mở Modal Nâng cấp)
+function showUpgradeModal(event) {
+    event.preventDefault(); 
+    
+    // Đóng menu thả xuống thành viên
+    const dropdown = document.getElementById("member-dropdown");
+    const arrow = document.querySelector("#member-btn .dropdown-arrow");
+    if (dropdown && dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+        arrow.classList.remove('rotated');
+    }
+
+    // Mở Modal Nâng cấp
+    showModal('upgrade');
+}
+
+// --- 5. HÀM XỬ LÝ SỰ KIỆN KHI TẢI TRANG (Đóng Alert Bar) ---
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const closeBtn = document.querySelector('.alert-bar .close-btn');
     const alertBar = document.querySelector('.alert-bar');
 
     if (closeBtn && alertBar) {
         closeBtn.onclick = function() {
-            // Ẩn thanh thông báo bằng cách thay đổi display
             alertBar.style.display = 'none';
         }
     }
