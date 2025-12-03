@@ -10,6 +10,33 @@
 </head>
 <body class="dark-theme">
 
+    <script>
+        document.onkeydown = function(e) {
+            // Ngăn F12
+            if (e.keyCode == 123) {
+                // Tự động đóng cửa sổ hoặc chuyển hướng trang
+                window.close(); // Thường bị trình duyệt chặn
+                if (window.stop) { // Tải lại trang (thử nghiệm)
+                    window.stop();
+                    alert("Cảnh báo: Phát hiện mở Công cụ Phát triển. Hệ thống sẽ khóa nếu tiếp tục.");
+                    return false;
+                }
+            }
+            // Ngăn Ctrl+Shift+I, J, C, U (Dùng cho Windows/Linux)
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'U'.charCodeAt(0))) {
+                e.preventDefault();
+                alert("Không được phép truy cập Công cụ Phát triển.");
+            }
+            // Ngăn Ctrl+Shift+C (Phổ biến)
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 67) {
+                 e.preventDefault();
+                 alert("Không được phép truy cập Công cụ Phát triển.");
+            }
+        };
+        // Ngăn click chuột phải
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+    
     <div class="alert-bar">
         <div class="alert-content-wrapper"> 
             <p>Tài Liệu Có Bản Quyền , Vui Lòng Không Kinh Doanh Với Mục Đích Bất Hợp Pháp. | CẢNH BÁO: PHÁT HIỆN TÀI KHOẢN VI PHẠM SẼ BỊ KHÓA NGAY LẬP TỨC VÀ KHÔNG HOÀN TIỀN.</p>
@@ -35,12 +62,14 @@
                 <div class="dropdown-content" id="member-dropdown">
                     <a href="#">Thông tin cá nhân</a>
                     <a href="#">Lịch sử giao dịch</a>
-                    <a href="#" onclick="showUpgradeModal(event)">Nâng cấp tài khoản</a> 
-                    <a href="#" class="logout-btn">Đăng xuất</a>
+                    <a href="#" id="upgrade-link" onclick="showUpgradeModal(event)">Nâng cấp tài khoản</a> 
+                    <a href="#" id="admin-link" onclick="showAdminModal(event)" style="display:none; color: gold;">QUẢN TRỊ ADMIN</a>
+                    <a href="#" class="logout-btn" onclick="handleLogout()">Đăng xuất</a>
                 </div>
             </div>
             
-            <a href="#" class="login-btn" onclick="showLoginModal(event)">Đăng nhập</a>
+            <a href="#" class="login-btn" id="login-nav-btn" onclick="showLoginModal(event)">Đăng nhập</a>
+            
             <a href="#" class="nav-link">Cộng cụ</a>
             <a href="#" class="nav-link">Tanyuyen</a>
             <button class="theme-toggle" id="theme-toggle-btn">☀️</button>
@@ -119,7 +148,7 @@
                     <p><strong>Tên sản phẩm:</strong> <span class="product-name-display"></span></p>
                     <p><strong>Giá tiền:</strong> <span class="price-display"></span></p>
                     <p class="warning-text">Để thanh toán, vui lòng đăng nhập.</p>
-                    <button class="auth-button register-button" onclick="alert('Tính năng này sẽ chuyển bạn đến trang tạo tài khoản do bạn tự làm (ví dụ: ASP.NET Identity Register)')">Đăng ký (Tự tạo)</button>
+                    <button class="auth-button register-button" onclick="alert('Tính năng đăng ký đã bị vô hiệu hóa cho người dùng mới theo yêu cầu.')">Đăng ký (Vô hiệu hóa)</button>
                 </div>
             </div>
         </div>
@@ -166,6 +195,38 @@
         </div>
     </div>
     
+    <div id="admin_modal" class="modal">
+        <div class="modal-content large-modal admin-content">
+            <span class="close-modal" onclick="closeModal('admin')">&times;</span>
+            <div class="modal-title"><p>BẢNG ĐIỀU KHIỂN ADMIN</p></div>
+            <div class="admin-panel-body">
+                <h3>Tạo Tài Khoản Thành Viên Mới</h3>
+                <form id="createMemberForm" onsubmit="handleCreateMember(event)">
+                    <div class="form-group">
+                        <label for="new_username">Tên tài khoản:</label>
+                        <input type="text" id="new_username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">Mật khẩu:</label>
+                        <input type="password" id="new_password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_role">Vai trò:</label>
+                        <select id="new_role">
+                            <option value="Member">Thành viên thường</option>
+                            <option value="VIP">Thành viên VIP</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="admin-action-btn">Tạo Tài Khoản</button>
+                </form>
+
+                <h3 style="margin-top: 30px;">Quản lý Sản phẩm (Mô phỏng)</h3>
+                <button class="admin-action-btn secondary-btn" onclick="alert('Mô phỏng: Chuyển đến trang chỉnh sửa sản phẩm')">Chỉnh sửa Sản phẩm</button>
+            </div>
+            <div class="admin-footer"><p>Chỉ Admin mới có thể truy cập khu vực này.</p></div>
+        </div>
+    </div>
+
     <script src="data.js"></script> 
     <script src="app.js"></script> 
 </body>
