@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VẬT LIỆU HOẠT HÌNH GẤU </title>
+    <title>VẬT LIỆU HOẠT HÌNH GẤU</title>
     <link rel="stylesheet" href="styles.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -36,6 +36,7 @@
                     <a href="#">Đăng xuất</a>
                 </div>
             </div>
+            
             <a href="#" class="login-btn" onclick="showLoginMessage(event)">Đăng nhập</a>
             <a href="#">Cộng cụ</a>
             <a href="#">Tanyuyen</a>
@@ -56,45 +57,30 @@
         </div>
 
         <div class="product-grid">
-            
             <div class="product-item" onclick="showModal('item_a')">
                 <div class="copyright-tag">Bản quyền</div>
-                <div class="product-image-area">
-                    [Placeholder Image: Nhân vật a(1)]
-                    <i class="fas fa-shopping-cart cart-icon"></i>
-                </div>
+                <div class="product-image-area">[Placeholder Image 1]</div>
                 <p class="product-title">Nhân vật.a(1)</p>
             </div>
-            
             <div class="product-item" onclick="showModal('item_b')">
                 <div class="copyright-tag">Bản quyền</div>
-                <div class="product-image-area">
-                    [Placeholder Image: 萌娃.b]
-                    <i class="fas fa-shopping-cart cart-icon"></i>
-                </div>
+                <div class="product-image-area">[Placeholder Image 2]</div>
                 <p class="product-title">萌娃.b</p>
             </div>
-            
-            </div>
-
+        </div>
     </main>
     
     <div id="item_a_modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('item_a')">&times;</span>
             <div class="modal-title"><p>Nhân vật.a(1)</p></div>
-            
             <div class="modal-body">
-                <div class="detail-image-area">
-                    [Placeholder Image: Chi tiết Nhân vật.a(1)]
-                </div>
+                <div class="detail-image-area">[Placeholder Image Chi tiết]</div>
             </div>
-            
             <div class="modal-price-area">
                 <p class="price-label">Giá tiền:</p>
                 <p class="item-price">250,000 VND</p>
             </div>
-
             <div class="modal-actions">
                 <button class="checkout-button" onclick="showPaymentModal(event, 'Nhân Vật.a(1)', '250,000 VND')">THANH TOÁN</button>
             </div>
@@ -104,21 +90,16 @@
     <div id="payment_modal" class="modal">
         <div class="modal-content large-modal">
             <span class="close-modal" onclick="closeModal('payment')">&times;</span>
-            <div class="modal-title">
-                <p>ĐĂNG NHẬP/ĐĂNG KÝ ĐỂ THANH TOÁN</p>
-            </div>
-            
+            <div class="modal-title"><p>ĐĂNG NHẬP/ĐĂNG KÝ ĐỂ THANH TOÁN</p></div>
             <div class="payment-form-body">
                 <div class="auth-section">
                     <h3>Đăng nhập</h3>
                     <form id="loginForm">
-                        <input type="text" placeholder="Tên tài khoản">
-                        <input type="password" placeholder="Mật khẩu">
+                        <input type="text" placeholder="Tên tài khoản"><input type="password" placeholder="Mật khẩu">
                         <button type="submit" class="auth-button login-button">Đăng nhập</button>
                         <a href="#" class="forgot-password">Quên mật khẩu?</a>
                     </form>
                 </div>
-
                 <div class="info-section">
                     <h3>Thông tin giao dịch</h3>
                     <p><strong>Tên sản phẩm:</strong> <span class="product-name-display"></span></p>
@@ -133,10 +114,7 @@
     <div id="upgrade_modal" class="modal">
         <div class="modal-content large-modal upgrade-content">
             <span class="close-modal" onclick="closeModal('upgrade')">&times;</span>
-            <div class="modal-title">
-                <p>CHỌN GÓI NÂNG CẤP VIP</p>
-            </div>
-            
+            <div class="modal-title"><p>CHỌN GÓI NÂNG CẤP VIP</p></div>
             <div class="upgrade-tiers">
                 <div class="tier-card basic-vip">
                     <h3>VIP CƠ BẢN</h3>
@@ -148,7 +126,6 @@
                     </ul>
                     <button class="upgrade-btn basic-btn" onclick="alert('Chuyển đến trang thanh toán cho Gói Cơ Bản')">Nâng cấp ngay</button>
                 </div>
-
                 <div class="tier-card vip-two recommended">
                     <h3>VIP 2</h3>
                     <p class="price">250,000 VND / Năm</p>
@@ -160,7 +137,6 @@
                     </ul>
                     <button class="upgrade-btn vip2-btn" onclick="alert('Chuyển đến trang thanh toán cho Gói VIP 2')">Nâng cấp Vip 2</button>
                 </div>
-                
                 <div class="tier-card unlimited">
                     <h3>VIP VÔ HẠN</h3>
                     <p class="price">1,999,000 VND / Trọn đời</p>
@@ -171,13 +147,9 @@
                     <button class="upgrade-btn lifetime-btn" onclick="alert('Chuyển đến trang thanh toán cho Gói Trọn Đời')">Nâng cấp Trọn đời</button>
                 </div>
             </div>
-            
-            <div class="upgrade-footer">
-                <p>Lưu ý: Sau khi thanh toán thành công, tài khoản sẽ được kích hoạt ngay lập tức.</p>
-            </div>
+            <div class="upgrade-footer"><p>Lưu ý: Sau khi thanh toán thành công, tài khoản sẽ được kích hoạt ngay lập tức.</p></div>
         </div>
     </div>
-
 
     <script src="script.js"></script> 
 </body>
