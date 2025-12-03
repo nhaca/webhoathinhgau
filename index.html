@@ -10,7 +10,7 @@
 <body>
 
     <div class="alert-bar">
-        <p>Tài Liệu Có Bản Quyền , Vui Lòng Không Kinh Doanh Với Mục Đích Bất Hợp Pháp</p>
+        <p>Tài Liệu Có Bản Quyền , Vui Lòng Không Kinh Doanh Với Mục Đích Bất Hợp Pháp.</p>
         <span class="close-btn">&times;</span>
     </div>
 
@@ -26,32 +26,41 @@
 
         <nav class="user-nav">
             <a href="#">Trang Chủ</a>
-            <a href="#">Thành Viên</a>
+            
+            <div class="dropdown-member">
+                <a href="#" class="nav-link" id="member-btn" onclick="toggleDropdown(event)">Thành Viên <i class="fas fa-chevron-down dropdown-arrow"></i></a>
+                <div class="dropdown-content" id="member-dropdown">
+                    <a href="#">Thông tin cá nhân</a>
+                    <a href="#">Lịch sử giao dịch</a>
+                    <a href="#" onclick="showUpgradeModal(event)">Nâng cấp tài khoản</a> 
+                    <a href="#">Đăng xuất</a>
+                </div>
+            </div>
+            <a href="#" class="login-btn" onclick="showLoginMessage(event)">Đăng nhập</a>
             <a href="#">Cộng cụ</a>
-            <a href="#" class="login-btn">Đăng nhập</a>
+            <a href="#">Tanyuyen</a>
             <button class="theme-toggle">☀️</button>
         </nav>
     </header>
 
     <main class="content-wrapper">
-        
         <nav class="main-menu-nav">
             <button>Nhân vật</button>
             <button>Cao độ</button>
-            </nav>
+        </nav>
 
         <div class="filter-bar">
             <button class="active">Tất Cả</button>
             <button>Hiện Đại</button>
             <button>Lịch Sử</button>
-            </div>
+        </div>
 
         <div class="product-grid">
             
             <div class="product-item" onclick="showModal('item_a')">
                 <div class="copyright-tag">Bản quyền</div>
                 <div class="product-image-area">
-                    
+                    [Placeholder Image: Nhân vật a(1)]
                     <i class="fas fa-shopping-cart cart-icon"></i>
                 </div>
                 <p class="product-title">Nhân vật.a(1)</p>
@@ -60,7 +69,7 @@
             <div class="product-item" onclick="showModal('item_b')">
                 <div class="copyright-tag">Bản quyền</div>
                 <div class="product-image-area">
-                    
+                    [Placeholder Image: 萌娃.b]
                     <i class="fas fa-shopping-cart cart-icon"></i>
                 </div>
                 <p class="product-title">萌娃.b</p>
@@ -70,43 +79,101 @@
 
     </main>
     
-    <div id="item_b_modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('item_b')">&times;</span>
-            
-            <div class="modal-title">
-                <p>萌娃.b</p>
-            </div>
-            
-            <div class="modal-body">
-                <div class="detail-image-area">
-                    <button class="nav-arrow left-arrow"><i class="fas fa-chevron-left"></i></button>
-                    
-                    <button class="nav-arrow right-arrow"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                <button class="buy-button"><i class="fas fa-cart-plus"></i> Mua để sao chép</button>
-                <button class="copy-button"><i class="fas fa-copy"></i> Sao chép ảnh</button>
-                <button class="buy-content-button"><i class="fas fa-cloud-download-alt"></i> Mua nội dung</button>
-            </div>
-        </div>
-    </div>
-    
     <div id="item_a_modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('item_a')">&times;</span>
             <div class="modal-title"><p>Nhân vật.a(1)</p></div>
+            
             <div class="modal-body">
                 <div class="detail-image-area">
-                    
+                    [Placeholder Image: Chi tiết Nhân vật.a(1)]
                 </div>
             </div>
+            
+            <div class="modal-price-area">
+                <p class="price-label">Giá tiền:</p>
+                <p class="item-price">250,000 VND</p>
+            </div>
+
             <div class="modal-actions">
-                <button class="buy-button">Mua để sao chép</button>
-                <button class="copy-button">Sao chép ảnh</button>
-                <button class="buy-content-button">Mua nội dung</button>
+                <button class="checkout-button" onclick="showPaymentModal(event, 'Nhân Vật.a(1)', '250,000 VND')">THANH TOÁN</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="payment_modal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close-modal" onclick="closeModal('payment')">&times;</span>
+            <div class="modal-title">
+                <p>ĐĂNG NHẬP/ĐĂNG KÝ ĐỂ THANH TOÁN</p>
+            </div>
+            
+            <div class="payment-form-body">
+                <div class="auth-section">
+                    <h3>Đăng nhập</h3>
+                    <form id="loginForm">
+                        <input type="text" placeholder="Tên tài khoản">
+                        <input type="password" placeholder="Mật khẩu">
+                        <button type="submit" class="auth-button login-button">Đăng nhập</button>
+                        <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                    </form>
+                </div>
+
+                <div class="info-section">
+                    <h3>Thông tin giao dịch</h3>
+                    <p><strong>Tên sản phẩm:</strong> <span class="product-name-display"></span></p>
+                    <p><strong>Giá tiền:</strong> <span class="price-display"></span></p>
+                    <p class="warning-text">Để thanh toán, vui lòng đăng nhập hoặc đăng ký tài khoản.</p>
+                    <button class="auth-button register-button">Đăng ký ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="upgrade_modal" class="modal">
+        <div class="modal-content large-modal upgrade-content">
+            <span class="close-modal" onclick="closeModal('upgrade')">&times;</span>
+            <div class="modal-title">
+                <p>CHỌN GÓI NÂNG CẤP VIP</p>
+            </div>
+            
+            <div class="upgrade-tiers">
+                <div class="tier-card basic-vip">
+                    <h3>VIP CƠ BẢN</h3>
+                    <p class="price">50,000 VND / Tháng</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Truy cập 100+ tài nguyên Free</li>
+                        <li><i class="fas fa-check-circle"></i> Tốc độ tải thường</li>
+                        <li><i class="fas fa-times-circle"></i> Không tải được tài nguyên VIP</li>
+                    </ul>
+                    <button class="upgrade-btn basic-btn" onclick="alert('Chuyển đến trang thanh toán cho Gói Cơ Bản')">Nâng cấp ngay</button>
+                </div>
+
+                <div class="tier-card vip-two recommended">
+                    <h3>VIP 2</h3>
+                    <p class="price">250,000 VND / Năm</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Truy cập **TOÀN BỘ** tài nguyên</li>
+                        <li><i class="fas fa-check-circle"></i> Tốc độ tải TỐI ĐA</li>
+                        <li><i class="fas fa-check-circle"></i> Hỗ trợ ưu tiên 24/7</li>
+                        <li><i class="fas fa-check-circle"></i> Quyền sử dụng thương mại</li>
+                    </ul>
+                    <button class="upgrade-btn vip2-btn" onclick="alert('Chuyển đến trang thanh toán cho Gói VIP 2')">Nâng cấp Vip 2</button>
+                </div>
+                
+                <div class="tier-card unlimited">
+                    <h3>VIP VÔ HẠN</h3>
+                    <p class="price">1,999,000 VND / Trọn đời</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Tất cả các quyền lợi VIP 2</li>
+                        <li><i class="fas fa-check-circle"></i> Trọn đời, không gia hạn</li>
+                    </ul>
+                    <button class="upgrade-btn lifetime-btn" onclick="alert('Chuyển đến trang thanh toán cho Gói Trọn Đời')">Nâng cấp Trọn đời</button>
+                </div>
+            </div>
+            
+            <div class="upgrade-footer">
+                <p>Lưu ý: Sau khi thanh toán thành công, tài khoản sẽ được kích hoạt ngay lập tức.</p>
             </div>
         </div>
     </div>
