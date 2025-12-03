@@ -1,9 +1,9 @@
 // HÀM HIỆN POP-UP (MODAL)
 function showModal(itemId) {
-    // Lấy ID của modal (ví dụ: 'item_a' -> 'item_a_modal')
+    // Tìm modal dựa trên ID (ví dụ: 'item_a' -> 'item_a_modal')
     var modal = document.getElementById(itemId + '_modal');
     if (modal) {
-        // Hiện modal bằng cách thay đổi thuộc tính display
+        // Hiển thị modal
         modal.style.display = "block";
     }
 }
@@ -17,7 +17,7 @@ function closeModal(itemId) {
     }
 }
 
-// XỬ LÝ SỰ KIỆN: Ẩn modal khi click ra ngoài khu vực nội dung modal
+// XỬ LÝ SỰ KIỆN: Ẩn modal khi người dùng click vào vùng nền tối bên ngoài
 window.onclick = function(event) {
     // Lấy tất cả các modal trên trang
     var modals = document.querySelectorAll('.modal');
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (closeBtn && alertBar) {
         closeBtn.onclick = function() {
-            // Ẩn thanh thông báo
+            // Ẩn thanh thông báo bằng cách thay đổi display
             alertBar.style.display = 'none';
         }
     }
