@@ -1,4 +1,4 @@
-// --- 1. HÀM QUẢN LÝ MODAL (POP-UP) ---
+// --- 1. HÀM QUẢN LÝ MODAL (POP-UP) CHUNG ---
 
 // Hiện modal
 function showModal(itemId) {
@@ -26,9 +26,9 @@ window.onclick = function(event) {
     });
 }
 
-// --- 2. HÀM XỬ LÝ THANH TOÁN & ĐĂNG NHẬP ---
+// --- 2. HÀM TƯƠNG TÁC CHÍNH ---
 
-// Xử lý khi bấm nút "Đăng nhập"
+// Xử lý khi bấm nút "Đăng nhập" (Yêu cầu hiển thị chữ trên)
 function showLoginMessage(event) {
     event.preventDefault(); 
     alert("Chức năng Đăng nhập đang được xây dựng. (Trong .NET, bạn sẽ chuyển hướng đến trang /Identity/Account/Login ở đây)");
@@ -47,7 +47,6 @@ function showPaymentModal(event, productName, price) {
     // Cập nhật thông tin trong Modal Thanh toán
     const paymentModal = document.getElementById('payment_modal');
     
-    // Cập nhật tên sản phẩm và giá tiền
     if (paymentModal) {
         paymentModal.querySelector('.product-name-display').textContent = productName;
         paymentModal.querySelector('.price-display').textContent = price;
@@ -67,7 +66,6 @@ function toggleDropdown(event) {
     const dropdown = document.getElementById("member-dropdown");
     const arrow = document.querySelector("#member-btn .dropdown-arrow");
     
-    // Đóng các dropdown khác trước khi mở cái này
     closeOtherDropdowns(dropdown);
     
     dropdown.classList.toggle('show');
