@@ -228,4 +228,73 @@
 .product-name-display { 
     font-weight: bold; 
     color: var(--color-primary);
+} 
+
+/* ========================================================================= */
+/* --- MODAL 4: ADMIN PANEL (YÊU CẦU 3) --- */
+/* ========================================================================= */
+
+.admin-panel-body {
+    padding: 30px 50px;
+}
+
+.admin-panel-body h3 {
+    color: gold;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-panel-body .form-group {
+    margin-bottom: 15px;
+}
+
+.admin-panel-body label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--color-text-light);
+}
+
+.admin-panel-body input[type="text"],
+.admin-panel-body input[type="password"],
+.admin-panel-body select {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-dark-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-light);
+    border-radius: 4px;
+    outline: none;
+}
+
+.admin-action-btn {
+    padding: 12px 20px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+
+.admin-action-btn:hover {
+    background-color: #e04033;
+}
+
+.secondary-btn {
+    background-color: var(--color-button-login);
+}
+.secondary-btn:hover {
+    background-color: #0056b3;
+}
+
+.admin-footer {
+    padding: 10px 30px;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    font-size: 0.8em;
+    color: gold;
 }
